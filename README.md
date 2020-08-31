@@ -1,4 +1,4 @@
-# lattecoare-api
+# Padrões de projeto de sistema
 
 ## Integrantes
 - Felipe Nicoletti Reis Mario
