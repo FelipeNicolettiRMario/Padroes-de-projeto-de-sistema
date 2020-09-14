@@ -4,6 +4,7 @@ package model;
 import java.util.List;
 import java.util.LinkedList;
 
+
 public class Model {
 
     private final List<User> users = new LinkedList<User>();
@@ -14,11 +15,12 @@ public class Model {
     }
 
     //View is observing the Model
-    public User login(String email, String password) {
+    public User login(String username, String password) {
         for (User user : users) {
-            if (user.getEmail().equals(email) && user.getPassword().equals(password)) return user;
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) return user;
         }
         return null;
     }
+    
 
 }
