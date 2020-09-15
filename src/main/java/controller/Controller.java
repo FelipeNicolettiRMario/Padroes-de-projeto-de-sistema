@@ -51,11 +51,4 @@ public class Controller {
 
         });
     }
-
-    public void logout() {
-        // login route - REST Architecture
-        post("/logout",
-                (request, response) -> new Gson().toJson(new User("gabrielgiraud71@gmail.com", "password")));
-    }
-
 }

@@ -26,15 +26,9 @@ public class MainServer {
         //Serve html js css files
         staticFileLocation("/static");
 
-        inicializarCarros();
-
         Controller controller = new Controller(model);
 
         controller.login();
-
     }
 
-    public static void inicializarCarros() {
-        model.addUser(new User("joao@gmail.com", "thomasandfriends"));
-    }
 }
