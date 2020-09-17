@@ -1,8 +1,10 @@
 package main;
 
-import controller.Controller;
+import controller.AssemblyController;
+import model.Assembly;
 
-import static spark.Spark.*;
+import static spark.Spark.port;
+import static spark.Spark.staticFileLocation;
 
 
 public class MainServer {
@@ -24,9 +26,12 @@ public class MainServer {
         //Serve html js css files
         staticFileLocation("/static");
 
-        Controller controller = new Controller();
+        AssemblyController assemblyController = new AssemblyController(new Assembly());
 
-        controller.login();
+        assemblyController.add();
+        assemblyController.update();
+        assemblyController.fetch();
+        assemblyController.remove();
     }
 
 }
