@@ -1,6 +1,9 @@
 package model;
 
+import lombok.Data;
+
 import java.util.Date;
+@Data
 
 public class Score {
 
@@ -22,70 +25,5 @@ public class Score {
         setUser(user);
         setAssembly(assembly);
         setDate(new Date());
-    }
-
-
-    public int getTentativas() {
-        return tentativas;
-    }
-
-    public void setTentativas(int tentativas) {
-        this.tentativas = tentativas;
-    }
-
-    public float getAproveitamento() {
-        return aproveitamento;
-    }
-
-    public void setAproveitamento(float aproveitamento) {
-        this.aproveitamento = aproveitamento;
-    }
-
-    public int getErros() {
-        return erros;
-    }
-
-    public void setErros(int erros) {
-        this.erros = erros;
-    }
-
-    public int getOrdem() {
-        return ordem;
-    }
-
-    public void setOrdem(int ordem) {
-        this.ordem = ordem;
-    }
-
-    public int getAcertos() {
-        return acertos;
-    }
-
-    public void setAcertos(int acertos) {
-        this.acertos = acertos;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date data) {
-        this.date = data;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Assembly getAssembly() {
-        return assembly;
-    }
-
-    public void setAssembly(Assembly assembly) {
-        this.assembly = assembly;
     }
 }

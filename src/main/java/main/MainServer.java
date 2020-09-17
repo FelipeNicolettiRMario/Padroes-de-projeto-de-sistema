@@ -1,15 +1,13 @@
 package main;
 
 import controller.Controller;
-import model.Model;
-import model.User;
 
 import static spark.Spark.*;
 
 
 public class MainServer {
 
-    final static Model model = new Model();
+    //final static Model model = new Model();
 
     public static void main(String[] args) {
 
@@ -26,7 +24,7 @@ public class MainServer {
         //Serve html js css files
         staticFileLocation("/static");
 
-        Controller controller = new Controller(model);
+        Controller controller = new Controller();
 
         controller.login();
     }
