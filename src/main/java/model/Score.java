@@ -1,11 +1,12 @@
 package model;
 
 import lombok.Data;
+import org.bson.Document;
 
 import java.util.Date;
 @Data
 
-public class Score {
+public class Score extends Document {
 
     private int tentativas;
     private float aproveitamento;
@@ -15,10 +16,10 @@ public class Score {
     private Date date;
     private User user;
     private Assembly assembly;
-    private MongoConnection mongoConnection;
+    private Context context;
 
-    public Score(MongoConnection mongoConnection) {
-        this.mongoConnection = mongoConnection;
+    public Score(Context context) {
+        this.context = context;
     }
 
     public Score(int erros, int ordem, int acertos, User user, Assembly assembly) {

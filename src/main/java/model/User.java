@@ -1,25 +1,37 @@
 package model;
 
+import com.mongodb.client.ClientSession;
 import lombok.Data;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import static com.mongodb.client.model.Filters.eq;
 
 @Data
+public class User extends Document {
 
-public class User {
-
+    private ObjectId id;
     private String username;
     private String name;
     private String password;
     private boolean admin;
-    private MongoConnection mongoConnection;
+    private Context context;
 
-    public User(MongoConnection mongoConnection) {
-        this.mongoConnection = mongoConnection;
+    public User(Context context) {
+        this.context = context;
     }
 
-    public User(String username, String name, String password, boolean admin) {
-        this.username = username;
-        this.name = name;
+    public User addUser(String username, String name, String password) {
         this.password = password;
-        this.admin = admin;
+        this.name = name;
+        this.username = username;
+        this.admin = false;
+        context.users.insertOne(this);
+        return context.users.find((ClientSession) eq("username", this.username), eq("password", this.password)).first();
     }
+
+    public User login(String username, String password) {
+        return context.users.find((ClientSession) eq("username", username), eq("password", password)).first();
+    }
+
 }

@@ -25,27 +25,29 @@ public class MainServer {
 
         //mongo connection
         MongoConnection mongoConnection = new MongoConnection("", "");
+        Context context = new Context(mongoConnection);
+
 
         //bind mongodb to model of controllers and create routes
-        var userController = new UserController(new User(mongoConnection));
+        var userController = new UserController(new User(context));
         userController.add();
         userController.fetch();
         userController.remove();
         userController.update();
 
-        var assemblyController = new AssemblyController(new Assembly(mongoConnection));
+        var assemblyController = new AssemblyController(new Assembly(context));
         assemblyController.add();
         assemblyController.fetch();
         assemblyController.remove();
         assemblyController.update();
 
-        var pieceController = new PieceController(new Piece(mongoConnection));
+        var pieceController = new PieceController(new Piece(context));
         pieceController.add();
         pieceController.fetch();
         pieceController.remove();
         pieceController.update();
 
-        var scoreController = new ScoreController(new Score(mongoConnection));
+        var scoreController = new ScoreController(new Score(context));
         scoreController.add();
         scoreController.fetch();
         scoreController.remove();

@@ -1,13 +1,13 @@
 package model;
 
-import com.mongodb.*;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
+import lombok.Data;
 
-
+@Data
 public class MongoConnection {
     private final MongoClient mongoClient;
     private final MongoDatabase database;
@@ -22,10 +22,6 @@ public class MongoConnection {
 
         this.mongoClient = MongoClients.create(settings);
         this.database = mongoClient.getDatabase(databaseName);
-    }
-
-    public MongoCollection<Document> getCollection(String collection){
-        return database.getCollection(collection);
     }
     public void close(){
         mongoClient.close();
