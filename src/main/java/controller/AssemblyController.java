@@ -25,12 +25,6 @@ public class AssemblyController {
 
             JSONObject json = new JSONObject(request.body());
 
-//            String email = json.getString("email");
-//
-//            String password = json.getString("password");
-//
-//            User user = assembly.login(email, password);
-
             //if user exists, return it
             if (assembly != null) return new Gson().toJson(assembly);
             else { //if not, return a status 0
