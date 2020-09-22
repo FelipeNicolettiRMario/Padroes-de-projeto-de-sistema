@@ -11,6 +11,11 @@ public class Piece {
     private String positionX;
     private String positionY;
     private String positionZ;
+    private MongoConnection mongoConnection;
+
+    public Piece(MongoConnection mongoConnection) {
+        this.mongoConnection = mongoConnection;
+    }
 
     public Piece(String id, String src, String srcImg, String name,
                  String positionX, String positionY, String positionZ) {

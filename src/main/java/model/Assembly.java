@@ -10,8 +10,9 @@ public class Assembly {
     private LinkedList<Piece> pieces;
     private String name;
     private int id;
+    private MongoConnection mongoConnection;
 
-    public Assembly(){
-
+    public Assembly(MongoConnection mongoConnection){
+        this.mongoConnection = mongoConnection;
     }
 }

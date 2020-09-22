@@ -15,6 +15,11 @@ public class Score {
     private Date date;
     private User user;
     private Assembly assembly;
+    private MongoConnection mongoConnection;
+
+    public Score(MongoConnection mongoConnection) {
+        this.mongoConnection = mongoConnection;
+    }
 
     public Score(int erros, int ordem, int acertos, User user, Assembly assembly) {
         setErros(erros);

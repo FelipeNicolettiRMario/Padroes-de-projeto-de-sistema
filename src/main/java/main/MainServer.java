@@ -1,7 +1,10 @@
 package main;
 
 import controller.AssemblyController;
-import model.Assembly;
+import controller.PieceController;
+import controller.ScoreController;
+import controller.UserController;
+import model.*;
 
 import static spark.Spark.port;
 import static spark.Spark.staticFileLocation;
@@ -9,29 +12,44 @@ import static spark.Spark.staticFileLocation;
 
 public class MainServer {
 
-    //final static Model model = new Model();
-
     public static void main(String[] args) {
 
         // Get port config of heroku on environment variable
         ProcessBuilder process = new ProcessBuilder();
-        int port;
-        if (process.environment().get("PORT") != null) {
-            port = Integer.parseInt(process.environment().get("PORT"));
-        } else {
-            port = 1234;
-        }
+
+        int port = process.environment().get("PORT") != null ? Integer.parseInt(process.environment().get("PORT")) : 1234;
         port(port);
 
         //Serve html js css files
         staticFileLocation("/static");
 
-        AssemblyController assemblyController = new AssemblyController(new Assembly());
+        //mongo connection
+        MongoConnection mongoConnection = new MongoConnection("", "");
 
+        //bind mongodb to model of controllers and create routes
+        var userController = new UserController(new User(mongoConnection));
+        userController.add();
+        userController.fetch();
+        userController.remove();
+        userController.update();
+
+        var assemblyController = new AssemblyController(new Assembly(mongoConnection));
         assemblyController.add();
-        assemblyController.update();
         assemblyController.fetch();
         assemblyController.remove();
+        assemblyController.update();
+
+        var pieceController = new PieceController(new Piece(mongoConnection));
+        pieceController.add();
+        pieceController.fetch();
+        pieceController.remove();
+        pieceController.update();
+
+        var scoreController = new ScoreController(new Score(mongoConnection));
+        scoreController.add();
+        scoreController.fetch();
+        scoreController.remove();
+        scoreController.update();
     }
 
 }
