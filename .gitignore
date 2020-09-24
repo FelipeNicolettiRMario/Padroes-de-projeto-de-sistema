@@ -15,3 +15,24 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 .IDEA
+
+.env
+bin/main/controller/AssemblyController.class
+bin/main/controller/PieceController.class
+bin/main/controller/ScoreController.class
+bin/main/controller/UserController.class
+bin/main/main/MainServer.class
+bin/main/model/Assembly.class
+bin/main/model/Piece.class
+bin/main/model/Score.class
+bin/main/model/User.class
+bin/main/model/Context.class
+bin/main/model/MongoConnection.class
+bin/main/hello/Controller.class
+bin/main/hello/MainServer.class
+bin/main/hello/Model.class
+bin/main/hello/User.class
+bin/main/hello/Controller.class
+bin/main/hello/MainServer.class
+bin/main/hello/Model.class
+bin/main/hello/User.class

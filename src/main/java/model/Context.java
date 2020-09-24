@@ -1,17 +1,18 @@
 package model;
 
 import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 
 public class Context {
-    public MongoCollection<User> users;
-    public MongoCollection<Assembly> assemblies;
-    public MongoCollection<Piece> pieces;
-    public MongoCollection<Score> scores;
+    public MongoCollection<Document> users;
+    public MongoCollection<Document> assemblies;
+    public MongoCollection<Document> pieces;
+    public MongoCollection<Document> scores;
 
-    public Context(MongoConnection mongoConnection){
-        this.users = mongoConnection.getDatabase().getCollection("user", User.class);
-        this.assemblies = mongoConnection.getDatabase().getCollection("assembly", Assembly.class);
-        this.pieces = mongoConnection.getDatabase().getCollection("piece", Piece.class);
-        this.scores = mongoConnection.getDatabase().getCollection("score", Score.class);
+    public Context(MongoConnection db) {
+        this.users = db.connect().getCollection("user");
+        this.assemblies = db.connect().getCollection("assembly");
+        this.pieces = db.connect().getCollection("piece");
+        this.scores = db.connect().getCollection("score");
     }
 }

@@ -1,9 +1,11 @@
 package model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.bson.Document;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class Piece extends Document {
     private String id;

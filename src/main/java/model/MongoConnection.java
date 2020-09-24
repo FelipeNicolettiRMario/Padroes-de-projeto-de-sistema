@@ -1,29 +1,30 @@
 package model;
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
 import lombok.Data;
 
 @Data
 public class MongoConnection {
-    private final MongoClient mongoClient;
-    private final MongoDatabase database;
+    private final MongoClient client;
+    private final MongoClientURI uri;
+    private final String database;
 
-
-    public MongoConnection(String connectionString, String databaseName) {
-        ConnectionString connectionString1 = new ConnectionString(connectionString);
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(connectionString1)
-                .retryWrites(true)
-                .build();
-
-        this.mongoClient = MongoClients.create(settings);
-        this.database = mongoClient.getDatabase(databaseName);
+    public MongoConnection(String connectionString, String database) {
+        {
+            this.uri = new MongoClientURI(connectionString);
+            MongoClientURI uri = new MongoClientURI(connectionString);
+            this.client = new MongoClient(uri);
+            this.database = database;
+        }
     }
-    public void close(){
-        mongoClient.close();
+
+    public MongoDatabase connect(){
+        return this.client.getDatabase(this.database);
+    }
+
+    public void close() {
+        client.close();
     }
 }

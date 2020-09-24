@@ -1,9 +1,12 @@
 package model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.bson.Document;
 
 import java.util.Date;
+
+@EqualsAndHashCode(callSuper = true)
 @Data
 
 public class Score extends Document {

@@ -20,21 +20,23 @@ public class UserController {
     public void add() {
         post("/user", (request, response) -> {
 
-            //request is an architectural element with email and passaword
-            //response is the json that this function returns
-            response.header("Access-Control-Allow-Origin", "*");
+            try {
+                response.header("Access-Control-Allow-Origin", "*");
+                JSONObject json = new JSONObject(request.body());
 
-            JSONObject json = new JSONObject(request.body());
+                var username = json.getString("username");
+                var name = json.getString("name");
+                var password = json.getString("password");
+                var newUser = this.user.addUser(username, name, password);
 
-            //if user exists, return it
-            if (user != null) return new Gson().toJson(user);
-            else { //if not, return a status 0
-
-                JSONObject jsonObj = new JSONObject();
-
-                jsonObj.put("status", 0);
-
-                return jsonObj;
+                if (newUser != null) return new Gson().toJson(newUser);
+                else {
+                    JSONObject jsonObj = new JSONObject();
+                    jsonObj.put("status", 0);
+                    return jsonObj;
+                }
+            } catch (Exception e) {
+                throw e;
             }
 
         });
