@@ -4,6 +4,7 @@ package controller;
 
 import com.google.gson.Gson;
 import model.User;
+import org.bson.Document;
 import org.json.JSONObject;
 
 import static spark.Spark.*;
@@ -24,10 +25,10 @@ public class UserController {
                 response.header("Access-Control-Allow-Origin", "*");
                 JSONObject json = new JSONObject(request.body());
 
-                var username = json.getString("username");
-                var name = json.getString("name");
-                var password = json.getString("password");
-                var newUser = this.user.addUser(username, name, password);
+                String username = json.getString("username");
+                String name = json.getString("name");
+                String password = json.getString("password");
+                Document newUser = this.user.addUser(username, name, password);
 
                 if (newUser != null) return new Gson().toJson(newUser);
                 else {
