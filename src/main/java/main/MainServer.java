@@ -18,8 +18,8 @@ public class MainServer {
         ProcessBuilder process = new ProcessBuilder();
         Dotenv dotenv = Dotenv.configure().load();
 
-        var connectionString = dotenv.get("CONNECTION_STRING");
-        var database = dotenv.get("DB");
+        String connectionString = dotenv.get("CONNECTION_STRING");
+        String database = dotenv.get("DB");
 
         int port = process.environment().get("PORT") != null ? Integer.parseInt(process.environment().get("PORT")) : 1234;
         port(port);
@@ -32,25 +32,25 @@ public class MainServer {
         Context context = new Context(mongoConnection);
 
         //bind mongodb to model of controllers and create routes
-        var userController = new UserController(new User(context));
+        UserController userController = new UserController(new User(context));
         userController.add();
         userController.fetch();
         userController.remove();
         userController.update();
 
-        var assemblyController = new AssemblyController(new Assembly(context));
+        AssemblyController assemblyController = new AssemblyController(new Assembly(context));
         assemblyController.add();
         assemblyController.fetch();
         assemblyController.remove();
         assemblyController.update();
 
-        var pieceController = new PieceController(new Piece(context));
+        PieceController pieceController = new PieceController(new Piece(context));
         pieceController.add();
         pieceController.fetch();
         pieceController.remove();
         pieceController.update();
 
-        var scoreController = new ScoreController(new Score(context));
+        ScoreController scoreController = new ScoreController(new Score(context));
         scoreController.add();
         scoreController.fetch();
         scoreController.remove();

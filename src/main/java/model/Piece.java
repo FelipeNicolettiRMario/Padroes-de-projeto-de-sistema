@@ -8,7 +8,11 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class Piece extends Document {
-    private String id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5630351000707414593L;
+	private String id;
     private String src;
     private String name;
     @BsonProperty(value = "src_img")

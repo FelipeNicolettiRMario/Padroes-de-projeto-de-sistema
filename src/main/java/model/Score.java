@@ -11,7 +11,11 @@ import java.util.Date;
 
 public class Score extends Document {
 
-    private int tentativas;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3161525073342614633L;
+	private int tentativas;
     private float aproveitamento;
     private int erros;
     private int ordem;

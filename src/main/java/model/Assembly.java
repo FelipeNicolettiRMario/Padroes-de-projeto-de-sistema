@@ -10,7 +10,11 @@ import java.util.LinkedList;
 @Data
 
 public class Assembly extends Document {
-    private LinkedList<Piece> pieces;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -9103792658302394297L;
+	private LinkedList<Piece> pieces;
     private String name;
     private int id;
     private Context context;
