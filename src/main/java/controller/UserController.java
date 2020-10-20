@@ -17,5 +17,4 @@ public class UserController extends GeneralController<User> {
         String password = jsonObj.getString("password");
         return entity.addUser(username, name, password);
 	}
-    
 }

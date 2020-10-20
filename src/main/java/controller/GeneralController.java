@@ -1,14 +1,10 @@
 package controller;
 
-import static spark.Spark.delete;
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.put;
-
+import com.google.gson.Gson;
 import org.bson.Document;
 import org.json.JSONObject;
 
-import com.google.gson.Gson;
+import static spark.Spark.*;
 
 public abstract class GeneralController<T extends Document> implements IController {
 	
@@ -23,70 +19,47 @@ public abstract class GeneralController<T extends Document> implements IControll
 	
 	@Override
 	public final void add() {
-		
 		post(path, (request, response) -> {
-
-            //request is an architectural element with email and passaword
-            //response is the json that this function returns
             response.header("Access-Control-Allow-Origin", "*");
-
             JSONObject json = new JSONObject(request.body());
             T addedEntity = addEntity(json);
-
             return getEntityOrDefault(addedEntity);
-
         });
-
 	}
 
 	@Override
 	public final void update() {
         put(path, (request, response) -> {
-
             JSONObject json = new JSONObject(request.body());
             T updatedEntity = updateEntity(json);
-            
             return getEntityOrDefault(updatedEntity);
-
         });
-
 	}
 
 	@Override
 	public final void fetch() {
 		get(path, (request, response) -> {
-
             JSONObject json = new JSONObject(request.body());
             T fetchedEntity = fetchEntity(json);
-            
             return getEntityOrDefault(fetchedEntity);
-
         });
-
-
 	}
 
 	@Override
 	public final void remove() {
         delete(path, (request, response) -> {
-
             JSONObject json = new JSONObject(request.body());
             T removedEntity = removeEntity(json);
-            
             return getEntityOrDefault(removedEntity);
-
         });
 
 	}
 
 	private Object getEntityOrDefault(T entity) {
 		if (entity != null) return new Gson().toJson(entity);
-		else { //if not, return a status 0
-
+		else {
 		    JSONObject jsonObj = new JSONObject();
-
 		    jsonObj.put("status", 0);
-
 		    return jsonObj;
 		}
 	}

@@ -1,25 +1,23 @@
 package model;
 
-import static com.mongodb.client.model.Filters.eq;
-
+import com.mongodb.client.ClientSession;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.bson.Document;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
-import com.mongodb.client.ClientSession;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import static com.mongodb.client.model.Filters.eq;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class User extends Document {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -6296747250484034222L;
-	@BsonProperty(value = "id")
+     *
+     */
+    private static final long serialVersionUID = -6296747250484034222L;
+    @BsonProperty(value = "id")
     private ObjectId id;
     @BsonProperty(value = "username")
     private String username;
@@ -45,17 +43,23 @@ public class User extends Document {
 
     public User addUser(String username, String name, String password) {
         Document user = new Document("_id", new ObjectId());
-        user.append("username", username)
-                .append("name", name)
-                .append("password", password)
-                .append("admin", false);
-        context.users.insertOne(user);
 
-        return context.users.find(eq("username", username),User.class).first();
+        var existUser = context.users.find(eq("username", username), User.class).first();
+
+        if (existUser == null) {
+            user.append("username", username)
+                    .append("name", name)
+                    .append("password", password)
+                    .append("admin", false);
+            context.users.insertOne(user);
+            return context.users.find(eq("username", username), User.class).first();
+        }
+
+        return existUser;
     }
 
     public User login(String username, String password) {
-        return context.users.find((ClientSession) eq("username", username), eq("password", password),User.class).first();
+        return context.users.find((ClientSession) eq("username", username), eq("password", password), User.class).first();
     }
 
 }
