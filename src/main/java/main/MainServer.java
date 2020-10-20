@@ -37,6 +37,8 @@ public class MainServer {
         userController.fetch();
         userController.remove();
         userController.update();
+        userController.login();
+        userController.setAdmin();
 
         AssemblyController assemblyController = new AssemblyController(new Assembly(context));
         assemblyController.add();

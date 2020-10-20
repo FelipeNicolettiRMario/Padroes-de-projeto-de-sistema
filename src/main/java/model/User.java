@@ -58,6 +58,10 @@ public class User extends Document {
         return existUser;
     }
 
+    public User setAdmin(boolean admin, ObjectId id){
+        return (User) context.users.findOneAndUpdate(eq("_id", id), new Document().append("admin", admin));
+    }
+
     public User login(String username, String password) {
         return context.users.find((ClientSession) eq("username", username), eq("password", password), User.class).first();
     }

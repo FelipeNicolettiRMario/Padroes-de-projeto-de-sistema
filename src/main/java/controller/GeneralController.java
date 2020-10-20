@@ -55,7 +55,7 @@ public abstract class GeneralController<T extends Document> implements IControll
 
 	}
 
-	private Object getEntityOrDefault(T entity) {
+	public Object getEntityOrDefault(T entity) {
 		if (entity != null) return new Gson().toJson(entity);
 		else {
 		    JSONObject jsonObj = new JSONObject();
