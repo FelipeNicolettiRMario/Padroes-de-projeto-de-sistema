@@ -41,7 +41,7 @@ public class User extends Document {
         this.admin = false;
     }
 
-    public User addUser(String username, String name, String password) {
+    public User create(String username, String name, String password) {
         Document user = new Document("_id", new ObjectId());
 
         var existUser = context.users.find(eq("username", username), User.class).first();
@@ -56,6 +56,26 @@ public class User extends Document {
         }
 
         return existUser;
+    }
+
+    public User update(ObjectId id, String username, String name, String password) {
+        User user = context.users.find(eq("_id", id), User.class).first();
+        if(user == null) {
+            throw new RuntimeException("User not found");
+        }
+        user.setUsername(username);
+        user.setName(name);
+        user.setPassword(password);
+        context.users.replaceOne(eq("_id", id), user);
+        return context.users.find(eq("_id", id), User.class).first();
+    }
+
+    public User read(ObjectId id) {
+        return context.users.find(eq("_id", id), User.class).first();
+    }
+
+    public void delete(ObjectId id) {
+        context.users.deleteOne(eq("_id", id));
     }
 
     public User setAdmin(boolean admin, ObjectId id){
