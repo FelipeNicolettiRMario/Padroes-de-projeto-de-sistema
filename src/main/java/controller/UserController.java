@@ -18,7 +18,7 @@ public class UserController extends GeneralController<User> {
         String username = jsonObj.getString("username");
         String name = jsonObj.getString("name");
         String password = jsonObj.getString("password");
-        return entity.create(username, name, password);
+        return entity.create(new User(username, name, password));
     }
 
     public void login() {
@@ -31,7 +31,8 @@ public class UserController extends GeneralController<User> {
 
             var user = entity.login(username, password);
 
-            if (user != null) return new Gson().toJson(user);
+            if (user != null)
+                return new Gson().toJson(user);
             else {
                 JSONObject jsonObj = new JSONObject();
                 jsonObj.put("status", 0);
@@ -42,14 +43,13 @@ public class UserController extends GeneralController<User> {
 
     public void setAdmin() {
         post("/user/admin", (request, response) -> {
-                    response.header("Access-Control-Allow-Origin", "*");
-                    JSONObject json = new JSONObject(request.body());
-                    var id = (ObjectId) json.get("id");
-                    var admin = (boolean) json.get("admin");
-                    entity.setAdmin(admin, id);
-                    return null;
-                }
-        );
+            response.header("Access-Control-Allow-Origin", "*");
+            JSONObject json = new JSONObject(request.body());
+            var id = (ObjectId) json.get("id");
+            var admin = (boolean) json.get("admin");
+            entity.setAdmin(admin, id);
+            return null;
+        });
     }
 
 }

@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 
-public class Assembly extends Document {
+public class Assembly extends Document implements IEntity<Assembly> {
     /**
 	 * 
 	 */

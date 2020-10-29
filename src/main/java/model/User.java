@@ -2,6 +2,8 @@ package model;
 
 import static com.mongodb.client.model.Filters.eq;
 
+import java.util.Map;
+
 import org.bson.Document;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
@@ -13,7 +15,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class User extends Document {
+public class User extends Document implements IEntity<User> {
 
 	/**
 	 *
@@ -56,13 +58,13 @@ public class User extends Document {
 	}
 
 	public User update(User updatedUser) {
-    	User user = context.users.find(eq("_id", id), User.class).first();
-        if(user == null) {
-            throw new RuntimeException("User not found");
-        }
-    	updatedUser.setId(user.getId());
-    	context.users.updateOne(eq("_id", user.getId()), updatedUser);
-    	return context.users.find(eq("_id", user.getId()), User.class).first();
+		User user = context.users.find(eq("_id", id), User.class).first();
+		if (user == null) {
+			throw new RuntimeException("User not found");
+		}
+		updatedUser.setId(user.getId());
+		context.users.updateOne(eq("_id", user.getId()), updatedUser);
+		return context.users.find(eq("_id", user.getId()), User.class).first();
 	}
 
 	public User read(ObjectId id) {
@@ -78,8 +80,6 @@ public class User extends Document {
 	}
 
 	public User login(String username, String password) {
-		return context.users.find((ClientSession) eq("username", username), eq("password", password), User.class)
-				.first();
+		return context.users.find((ClientSession) eq("username", username), eq("password", password), User.class).first();
 	}
-
 }

@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 
-public class Score extends Document {
+public class Score extends Document implements IEntity<Score>{
 
     /**
 	 * 
