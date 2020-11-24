@@ -4,9 +4,11 @@ import com.google.gson.Gson;
 import org.bson.Document;
 import org.json.JSONObject;
 
+import model.IEntity;
+
 import static spark.Spark.*;
 
-public abstract class GeneralController<T extends Document> implements IController {
+public abstract class GeneralController<T extends Document & IEntity<T>> implements IController {
 	
 	protected final String path;
 	protected T entity;
@@ -55,7 +57,7 @@ public abstract class GeneralController<T extends Document> implements IControll
 
 	}
 
-	private Object getEntityOrDefault(T entity) {
+	public Object getEntityOrDefault(T entity) {
 		if (entity != null) return new Gson().toJson(entity);
 		else {
 		    JSONObject jsonObj = new JSONObject();
