@@ -33,10 +33,10 @@ public class MainServer {
 
         //bind mongodb to model of controllers and create routes
         UserController userController = new UserController(new User(context));
-        userController.add();
-        userController.fetch();
-        userController.remove();
-        userController.update();
+        //userController.add();
+        //userController.fetch();
+        //userController.remove();
+        //userController.update();
         userController.login();
         userController.setAdmin();
 

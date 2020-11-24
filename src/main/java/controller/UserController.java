@@ -1,25 +1,17 @@
 package controller;
-
 import com.google.gson.Gson;
 import model.User;
 import org.bson.types.ObjectId;
 import org.json.JSONObject;
+import static spark.Spark.*;
 
-import static spark.Spark.post;
+public class UserController{
 
-public class UserController extends GeneralController<User> {
-
+    private final User entity;
     public UserController(User entity) {
-        super("/user", entity);
+        this.entity = entity;
     }
 
-    @Override
-    protected User addEntity(JSONObject jsonObj) {
-        String username = jsonObj.getString("username");
-        String name = jsonObj.getString("name");
-        String password = jsonObj.getString("password");
-        return entity.create(new User(username, name, password));
-    }
 
     public void login() {
         post("/login", (request, response) -> {

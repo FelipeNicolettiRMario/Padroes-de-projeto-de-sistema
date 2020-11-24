@@ -1,17 +1,13 @@
 package model;
 
-import static com.mongodb.client.model.Filters.eq;
-
-import java.util.Map;
-
+import com.mongodb.client.ClientSession;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.bson.Document;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
-import com.mongodb.client.ClientSession;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import static com.mongodb.client.model.Filters.eq;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -75,8 +71,8 @@ public class User extends Document implements IEntity<User> {
 		context.users.deleteOne(eq("_id", id));
 	}
 
-	public User setAdmin(boolean admin, ObjectId id) {
-		return (User) context.users.findOneAndUpdate(eq("_id", id), new Document().append("admin", admin));
+	public void setAdmin(boolean admin, ObjectId id) {
+		context.users.findOneAndUpdate(eq("_id", id), new Document().append("admin", admin));
 	}
 
 	public User login(String username, String password) {
