@@ -9,6 +9,4 @@ public interface IController {
 	void fetch();
 	
 	void remove();
-	
-	
 }
