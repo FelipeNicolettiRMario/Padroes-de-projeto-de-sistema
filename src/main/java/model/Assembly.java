@@ -1,17 +1,22 @@
 package model;
 
 import static com.mongodb.client.model.Filters.eq;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import com.mongodb.client.ClientSession;
+import com.mongodb.client.FindIterable;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import org.bson.Document;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import javax.print.Doc;
+import java.util.LinkedList;
+
+import static com.mongodb.client.model.Filters.eq;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -24,6 +29,12 @@ public class Assembly extends Document implements IEntity<Assembly> {
 	@BsonProperty(value = "_id")
 	private ObjectId id;
 	private List<ObjectId> pieces;
+
+
+	@BsonProperty(value = "pieces")
+	private LinkedList<Piece> pieces;
+	@BsonProperty(value = "name")
+
     private String name;
     private Context context;
 
@@ -63,5 +74,24 @@ public class Assembly extends Document implements IEntity<Assembly> {
     public List<Piece> getPieces() {
     	return StreamSupport.stream(context.pieces.find(eq("_id", this.pieces.toArray()), Piece.class).spliterator(), false).collect(Collectors.toList());
     }
+    
+    public Document addAssembly(){
+        Document assembly = new Document("_id",new ObjectId());
+
+        assembly.append("pieces",this.pieces)
+                .append("name",this.name);
+
+
+        context.assemblies.insertOne(assembly);
+
+        return assembly;
+    }
+
+    public FindIterable<Document> searchAssembly(ObjectId assemblyId){
+        Document criteria = new Document("_id",assemblyId);
+
+        return context.assemblies.find(criteria);
+    }
+
 
 }

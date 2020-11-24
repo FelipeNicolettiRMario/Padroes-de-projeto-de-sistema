@@ -8,6 +8,4 @@ public class AssemblyController extends GeneralController<Assembly> {
 		super("/assembly", entity);
 	}
 
-	
-	
 }
