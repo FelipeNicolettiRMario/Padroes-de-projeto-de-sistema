@@ -1,14 +1,15 @@
 package model;
 
-import static com.mongodb.client.model.Filters.eq;
-
-import java.util.Date;
-
+import com.mongodb.client.FindIterable;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.util.Date;
+import java.util.LinkedList;
+
+import static com.mongodb.client.model.Filters.eq;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -25,7 +26,7 @@ public class Score extends Document implements IEntity<Score>{
 	private int tentativas;
     private float aproveitamento;
     private int erros;
-    private int ordem;
+    private LinkedList<Integer> ordem;
     private int acertos;
     private Date date;
     private Context context;
@@ -34,7 +35,7 @@ public class Score extends Document implements IEntity<Score>{
         this.context = context;
     }
 
-    public Score(int erros, int ordem, int acertos, User user, Assembly assembly) {
+    public Score(int erros, LinkedList<Integer> ordem, int acertos, User user, Assembly assembly) {
         setErros(erros);
         setAcertos(acertos);
         setOrdem(ordem);
@@ -44,8 +45,8 @@ public class Score extends Document implements IEntity<Score>{
         setAssembly(assembly);
         setDate(new Date());
     }
-    
-    public Score create(Score score) {
+
+    public Document create(Score score) {
     	score.setId(new ObjectId());
     	context.scores.insertOne(score);
     	return context.scores.find(eq("_id", score.getId()), Score.class).first();
@@ -59,6 +60,11 @@ public class Score extends Document implements IEntity<Score>{
     	updatedScore.setId(score.getId());
     	context.scores.updateOne(eq("_id", score.getId()), updatedScore);
     	return context.scores.find(eq("_id", score.getId()), Score.class).first();
+    }
+
+    @Override
+    public LinkedList<Document> fetch() {
+        return null;
     }
 
     public Score read(ObjectId id) {

@@ -2,12 +2,13 @@ package model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import static com.mongodb.client.model.Filters.eq;
-
 import org.bson.Document;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
+
+import java.util.LinkedList;
+
+import static com.mongodb.client.model.Filters.eq;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -50,7 +51,7 @@ public class Piece extends Document implements IEntity<Piece> {
         this.positionZ = positionZ != null ? positionZ : "0";
     }
 
-    public Piece create(Piece piece) {
+    public Document create(Piece piece) {
         piece.setId(new ObjectId());
         context.pieces.insertOne(piece);
         return context.pieces.find(eq("_id", piece.getId()), Piece.class).first();
@@ -65,6 +66,11 @@ public class Piece extends Document implements IEntity<Piece> {
         updatedPiece.setId(piece.getId());
         context.pieces.updateOne(eq("_id", piece.getId()), updatedPiece);
         return context.pieces.find(eq("_id", piece.getId()), Piece.class).first();
+    }
+
+    @Override
+    public LinkedList<Document> fetch() {
+        return null;
     }
 
     public Piece read(ObjectId id) {

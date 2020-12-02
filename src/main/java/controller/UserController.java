@@ -12,6 +12,60 @@ public class UserController{
         this.entity = entity;
     }
 
+    public void getById() {
+        get("/user", (request, response) -> {
+            response.header("Access-Control-Allow-Origin", "*");
+            var id = new ObjectId(request.queryParams("id"));
+
+            var user = entity.read(id);
+
+            if (user != null)
+                return new Gson().toJson(user);
+            else {
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("status", 0);
+                return jsonObj;
+            }
+        });
+    }
+
+    public void fetch() {
+        get("/users", (request, response) -> {
+            response.header("Access-Control-Allow-Origin", "*");
+
+            var users = entity.fetch();
+
+            if (users != null)
+                return new Gson().toJson(users);
+            else {
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("status", 0);
+                return jsonObj;
+            }
+        });
+    }
+
+    public void add() {
+        post("/user", (request, response) -> {
+            response.header("Access-Control-Allow-Origin", "*");
+            JSONObject json = new JSONObject(request.body());
+
+            var username = json.get("username").toString();
+            var name = json.get("name").toString();
+            var password = json.get("password").toString();
+
+            var user = entity.create(username, name, password);
+
+            if (user != null)
+                return new Gson().toJson(user);
+            else {
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("status", 0);
+                return jsonObj;
+            }
+        });
+    }
+
 
     public void login() {
         post("/login", (request, response) -> {
