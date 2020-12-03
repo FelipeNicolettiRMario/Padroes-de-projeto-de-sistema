@@ -26,7 +26,7 @@ public class Assembly extends Document implements IEntity<Assembly> {
 	@BsonProperty(value = "_id")
 	private ObjectId id;
 	@BsonProperty(value = "pieces")
-	private List<ObjectId> pieces;
+	private List<Piece> pieces;
 	@BsonProperty(value = "name")
     private String name;
     private Context context;
@@ -35,15 +35,19 @@ public class Assembly extends Document implements IEntity<Assembly> {
         this.context = context;
     }
 
-    public Assembly() {
-
+    public Assembly(List<Piece> pieces, String name) {
+        this.pieces = pieces;
+        this.name = name;
     }
 
     public Document create(Assembly assembly) {
     	assembly.setId(new ObjectId());
+    	Document toInsert = new Document();
+    	toInsert.append("_id", assembly.getId());
+    	toInsert.append("pieces", assembly.getName());
+    	toInsert.append("name", assembly.getPieces());
     	context.assemblies.insertOne(assembly);
-    	return context.assemblies.find(eq("_id", assembly.getId()), Assembly.class).first();
-
+    	return context.assemblies.find(eq("_id", assembly.getId())).first();
     }
 
     public Assembly update(Assembly updatedAssembly) {
@@ -58,7 +62,13 @@ public class Assembly extends Document implements IEntity<Assembly> {
 
     @Override
     public LinkedList<Document> fetch() {
-        return null;
+        var cursor = context.assemblies.find().cursor();
+        var list = new LinkedList<Document>();
+        while (cursor.hasNext()) {
+            var document = cursor.next();
+            list.add(document);
+        }
+        return list;
     }
 
     public Assembly read(ObjectId id) {
@@ -69,26 +79,10 @@ public class Assembly extends Document implements IEntity<Assembly> {
     	context.assemblies.deleteOne(eq("_id", id));
     }
 
-    public void setPieces(List<Piece> pieces) {
-    	this.pieces = pieces.stream().map(Piece::getId).collect(Collectors.toList());
-    }
-
     public List<Piece> getPieces() {
     	return StreamSupport.stream(context.pieces.find(eq("_id", this.pieces.toArray()), Piece.class).spliterator(), false).collect(Collectors.toList());
     }
 
-    public Assembly addAssembly(){
-        Assembly assembly = new Assembly();
-        assembly.setId(new ObjectId());
-
-        assembly.append("pieces",this.pieces)
-                .append("name",this.name);
-
-
-        context.assemblies.insertOne(assembly);
-
-        return assembly;
-    }
 
     public FindIterable<Document> searchAssembly(ObjectId assemblyId){
         Document criteria = new Document("_id",assemblyId);

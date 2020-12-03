@@ -1,6 +1,5 @@
 package model;
 
-import com.mongodb.client.FindIterable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.bson.Document;
@@ -15,7 +14,7 @@ import static com.mongodb.client.model.Filters.eq;
 @Data
 public class User extends Document implements IEntity<User> {
     private static final long serialVersionUID = -6296747250484034222L;
-    @BsonProperty(value = "id")
+    @BsonProperty(value = "_id")
     private ObjectId id;
     @BsonProperty(value = "username")
     private String username;
@@ -32,10 +31,6 @@ public class User extends Document implements IEntity<User> {
         this.context = context;
     }
 
-    public User() {
-
-    }
-
     public Document create(String username, String name, String password) {
         Document existUser = context.users.find(eq("username", username)).first();
 
@@ -45,22 +40,23 @@ public class User extends Document implements IEntity<User> {
             user.append("username", username);
             user.append("name", name);
             user.append("password", password);
-            user.append("isAdmin", false);
+            user.append("admin", false);
             context.users.insertOne(user);
-            return context.users.find(eq("_id", user.getObjectId("_id"))).first();
+
+            var id =  user.getObjectId("_id");
+            return context.users.find(eq("_id",id)).first();
         }
 
         return existUser;
     }
 
-    public User update(User updatedUser) {
-        User user = context.users.find(eq("_id", id), User.class).first();
+    public Document update(User updatedUser) {
+        Document user = context.users.find(eq("_id", updatedUser.getId())).first();
         if (user == null) {
             throw new RuntimeException("User not found");
         }
-        updatedUser.setId(user.getId());
-        context.users.updateOne(eq("_id", user.getId()), updatedUser);
-        return context.users.find(eq("_id", user.getId()), User.class).first();
+        context.users.updateOne(eq("_id", updatedUser.getId()), updatedUser);
+        return context.users.find(eq("_id", updatedUser.getId())).first();
     }
 
     @Override
@@ -83,7 +79,10 @@ public class User extends Document implements IEntity<User> {
     }
 
     public void setAdmin(boolean admin, ObjectId id) {
-        context.users.findOneAndUpdate(eq("_id", id), new Document().append("admin", admin));
+        Document update = new Document();
+        update.put("$set", new Document("admin",admin));
+
+       context.users.updateOne(eq("_id", id), update);
     }
 
     public Document login(String username, String password) {
