@@ -6,7 +6,7 @@ import model.Piece;
 import org.bson.types.ObjectId;
 import org.json.JSONObject;
 
-import java.util.List;
+import java.util.LinkedList;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -52,14 +52,28 @@ public class AssemblyController {
 		post("/assembly", (request, response) -> {
 			JSONObject json = new JSONObject(request.body());
 
-			var pieces = (List<Piece>) json.getJSONArray("pieces");
-
 			var name = json.getString("name");
 
-			var user = entity.create(new Assembly(pieces, name));
 
-			if (user != null)
-				return new Gson().toJson(user);
+			var pieces = json.getJSONArray("pieces");
+			var listPieces = new LinkedList<Piece>();
+			for (int i = 0; i < pieces.length(); i++) {
+				var piecesObj = pieces.getJSONObject(i);
+				var pieceName = piecesObj.getString("name");
+				var src = piecesObj.getString("src");
+				var src_img = piecesObj.getString("src_img");
+				var positionX = piecesObj.getString("positionX");
+				var positionY = piecesObj.getString("positionY");
+				var positionZ = piecesObj.getString("positionZ");
+				var piece = new Piece(pieceName, src, src_img,positionX, positionY, positionZ);
+				listPieces.add(piece);
+			}
+
+			var assembly = entity.create(new Assembly(listPieces, name));
+
+
+			if (assembly != null)
+				return new Gson().toJson(assembly);
 			else {
 				JSONObject jsonObj = new JSONObject();
 				jsonObj.put("status", 0);

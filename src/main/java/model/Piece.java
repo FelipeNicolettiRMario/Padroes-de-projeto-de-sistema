@@ -19,10 +19,12 @@ public class Piece extends Document implements IEntity<Piece> {
     private static final long serialVersionUID = -5630351000707414593L;
     @BsonProperty(value = "_id")
     private ObjectId id;
+    @BsonProperty(value = "src")
     private String src;
+    @BsonProperty(value = "name")
     private String name;
     @BsonProperty(value = "src_img")
-    private String srcImg;
+    private String src_img;
     @BsonProperty(value = "position_x")
     private String positionX;
     @BsonProperty(value = "position_y")
@@ -34,6 +36,15 @@ public class Piece extends Document implements IEntity<Piece> {
 
     public Piece(Context context) {
         this.context = context;
+    }
+
+    public Piece(String name, String src, String src_img, String positionX, String positionY, String positionZ) {
+        this.name = name;
+        this.src =src;
+        this.src_img = src_img;
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.positionZ = positionZ;
     }
 
     public void setPositionX(String positionX) {

@@ -35,9 +35,9 @@ public class Assembly extends Document implements IEntity<Assembly> {
         this.context = context;
     }
 
-    public Assembly(List<Piece> pieces, String name) {
-        this.pieces = pieces;
+    public Assembly(LinkedList<Piece> listPieces, String name) {
         this.name = name;
+        this.pieces = listPieces;
     }
 
     public Document create(Assembly assembly) {
